@@ -8,6 +8,8 @@
 from django.db import models
 
 
+
+
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
 
@@ -145,7 +147,7 @@ class Employee(models.Model):
 
 
 class Fees(models.Model):
-    tid = models.CharField(primary_key=True, max_length=5)
+    tid = models.AutoField(primary_key=True)
     status = models.CharField(max_length=10, blank=True, null=True)
     tdate = models.DateField(blank=True, null=True)
     mode = models.CharField(max_length=10, blank=True, null=True)
@@ -163,7 +165,7 @@ class Grievence(models.Model):
     status = models.CharField(max_length=10, blank=True, null=True)
     location = models.CharField(max_length=15, blank=True, null=True)
     usn = models.ForeignKey('Student', models.DO_NOTHING, db_column='usn', blank=True, null=True)
-    dno = models.ForeignKey(Department, models.DO_NOTHING, db_column='dno', blank=True, null=True)
+    dno = models.ForeignKey('Department', models.DO_NOTHING, db_column='dno', blank=True, null=True)
 
     class Meta:
         managed = False

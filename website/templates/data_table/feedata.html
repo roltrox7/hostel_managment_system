@@ -1,0 +1,37 @@
+{%extends 'base.html' %}
+{%block title%}room data{%endblock title%}
+{%block body%}
+
+<div class="container mt-5">
+    <h1>Fee Details</h1>
+    <p class="lead">USN: {{ usn }}</p>
+    <p class="lead">Student Name: {{ sname }}</p>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">TID</th>
+                    <th scope="col">Mode</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fee in fees %}
+                <tr>
+                    <td>{{ fee.tid }}</td>
+                    <td>{{ fee.mode }}</td>
+                    <td>{{ fee.tdate }}</td>
+                    <td>{{ fee.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+</div>
+
+{%endblock body%}

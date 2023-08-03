@@ -65,7 +65,7 @@ def roomdetails(request):
         return render(request, 'req_forms/rooms.html')
         
     else:
-        return redirect('login')
+        return redirect('user_login')
     
 
 def hosteldetails(request):
@@ -95,7 +95,7 @@ def hosteldetails(request):
         return render(request, 'req_forms/hostel.html')
 
     else:
-        return redirect('login')
+        return redirect('user_login')
 
 
 def submitgrievence(request):
@@ -117,8 +117,7 @@ def submitgrievence(request):
                     status='Pending'  # You can set the initial status here if needed
                 )
 
-                # Optionally, you can print the created grievance ID
-                print("Grievance ID:", grievance.gid)
+                
 
                 messages.success(request, "Grievance submitted successfully.")
                 return redirect('submitgrievence')
@@ -128,3 +127,84 @@ def submitgrievence(request):
                 return redirect('submitgrievence')
             
         return render(request, 'req_forms/submitgrievence.html')
+
+def showgrievences(request):
+    if request.user.is_authenticated:
+        grievences=Grievence.objects.filter(status='PENDING')
+        context={
+            'grievences':grievences
+        }
+        if not grievences.exists():
+            messages.error("No pending grievences")
+            return redirect('loggedin')
+        
+        return render(request,'data_table/getgrievences.html',context)
+    
+    return redirect('login')
+       
+def payfees(request):
+    if request.user.is_authenticated:
+        if request.method=="POST":
+            try:
+                usn = request.POST['usn']
+                mode = request.POST['mode']
+                if mode=='online':
+                    status='processing'
+                else:
+                    status='paid'
+                tdate=date.today
+                student = Student.objects.get(usn=usn)
+                
+
+                fee = Fees.objects.create(
+                    usn=student,
+                    tdate=date.today(),
+                    status=status,
+                    mode=mode
+                )
+
+                
+
+                messages.success(request, "Fees paid sucessfully")
+                return redirect('payfees')
+
+            except Student.DoesNotExist:
+                messages.error(request, "Invalid USN. Student not found.")
+                return redirect('payfees')
+        else:    
+            return render(request, 'req_forms/payfees.html')
+    else:
+        return redirect(user_login)
+
+
+def feedetails(request):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            try:
+                usn = request.POST['usn']
+                student = Student.objects.get(usn=usn)
+                fees = Fees.objects.filter(usn=student)
+                context = {
+                    'sname':student.sname,
+                    'fees': fees,
+                    'usn':student.usn,
+                }
+
+                if not fees.exists():
+                    messages.error(request, "No fee records for the particular USN found.")
+                    return redirect('feedetails')
+
+                return render(request, 'data_table/feedata.html', context)
+
+            except Student.DoesNotExist:
+                messages.error(request, "No student found with the provided USN.")
+                return redirect('feedetails')
+
+            except Fees.DoesNotExist:
+                messages.error(request, "No fee records for the particular USN found.")
+                return redirect('feedetails')
+
+        return render(request, 'req_forms/feesdetail.html')
+
+    else:
+        return redirect('user_login')
