@@ -157,7 +157,7 @@ class Fees(models.Model):
 
 
 class Grievence(models.Model):
-    gid = models.CharField(primary_key=True, max_length=5)
+    gid = models.AutoField(primary_key=True)
     gdate = models.DateField(blank=True, null=True)
     desp = models.CharField(max_length=100, blank=True, null=True)
     status = models.CharField(max_length=10, blank=True, null=True)
@@ -203,7 +203,7 @@ class Rooms(models.Model):
 
 
 class Student(models.Model):
-    usn = models.CharField(primary_key=True, max_length=5)
+    usn = models.CharField(primary_key=True, max_length=10)
     sname = models.CharField(max_length=25)
     age = models.IntegerField(blank=True, null=True)
     gender = models.CharField(max_length=1, blank=True, null=True)
