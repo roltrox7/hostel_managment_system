@@ -21,3 +21,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('website.urls')),
 ]
+
+
+#configure admin page
+
+admin.site.site_header="Hostel admin"
+admin.site.site_title="admin"
+admin.site.index_title="Welcome To The Admin Area"
