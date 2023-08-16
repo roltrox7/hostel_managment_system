@@ -9,3 +9,8 @@ admin.site.register(Grievence)
 admin.site.register(Hostel)
 admin.site.register(Fees)
 admin.site.register(Department)
+
+
+
+
+admin.site.site_header='Hostel Administator',
